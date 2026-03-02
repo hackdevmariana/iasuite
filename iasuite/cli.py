@@ -21,6 +21,18 @@ def run_in_venv(venv_name, command):
     full_command = f"source {activate_script} && {command}"
     subprocess.run(full_command, shell=True, executable="/bin/bash")
 
+def detect_gpu():
+    try:
+        result = subprocess.run(
+            ["nvidia-smi"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        return result.returncode == 0
+    except FileNotFoundError:
+        return False
+
+
 # -----------------------
 # CLI principal
 # -----------------------
@@ -44,6 +56,11 @@ def setup():
         sys.exit(1)
 
     click.echo(f"✔ Python version: {sys.version.split()[0]}")
+
+    if detect_gpu():
+        click.echo("🚀 NVIDIA GPU detected.")
+    else:
+        click.echo("⚠ No NVIDIA GPU detected. Image/video generation may be slow.")
 
     base_path = os.path.dirname(os.path.dirname(__file__))
     envs_path = os.path.join(base_path, "envs")
