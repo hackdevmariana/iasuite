@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+
+# Entornos virtuales
+venv/
+envs/
+*.env
+*.venv
+
+# Archivos de logs o temporales
+*.log
+*.tmp
+.DS_Store
+
+# Salidas de imágenes/videos generados
+images/
+videos/
