@@ -73,3 +73,13 @@ Subcomandos disponibles:
 - lora → Genera LoRA para personajes IA.
 
 Cada subcomando tiene su propio entorno virtual y se ejecuta automáticamente dentro de él.
+
+## Contribuir
+
+Clona el repositorio.
+
+Crea tus entornos virtuales.
+
+Añade nuevas funcionalidades o mejoras en subcomandos.
+
+Abre pull requests para revisión.
