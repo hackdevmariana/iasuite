@@ -1,8 +1,29 @@
 #!/usr/bin/env python3
 import click
+import os
 import subprocess
-import sys
 
+# -----------------------
+# Helper para ejecutar en un venv específico
+# -----------------------
+def run_in_venv(venv_name, command):
+    """
+    Ejecuta un comando dentro de un entorno virtual específico.
+    """
+    base_path = os.path.dirname(__file__)
+    venv_path = os.path.join(base_path, "envs", venv_name)
+    activate_script = os.path.join(venv_path, "bin", "activate")
+
+    if not os.path.exists(activate_script):
+        click.echo(f"[ERROR] No existe el entorno virtual: {venv_path}")
+        return
+
+    full_command = f"source {activate_script} && {command}"
+    subprocess.run(full_command, shell=True, executable="/bin/bash")
+
+# -----------------------
+# CLI principal
+# -----------------------
 @click.group()
 def cli():
     """iasuite - Suite de herramientas IA para desarrollo y creación de contenido."""
@@ -12,108 +33,118 @@ def cli():
 # Subcomando: documentation
 # -----------------------
 @cli.command()
-@click.option('--project-path', '-p', default='.', help='Ruta al proyecto para generar documentación.')
 @click.option('--input', '-i', default='.', help='Directorio raíz de entrada')
 @click.option('--output', '-o', default='./doc', help='Directorio donde generar la documentación')
 @click.option('--template', '-t', default=None, help='Plantilla markdown para documentación')
 @click.option('--git-commit', is_flag=True, help='Hacer commit automático de cada fichero generado')
-@click.option('--mode', default='incremental', help='Determina si la escribe la documentación completa (full) o de forma incremental (incremental)')
-def documentation(project_path):
+@click.option('--mode', default='incremental', help='Modo de generación: incremental o full')
+def documentation(input, output, template, git_commit, mode):
     """Genera documentación automáticamente con Aider u otra IA."""
-    click.echo(f"[Documentation] Generando documentación en: {project_path}")
-    # Aquí llamas al entorno virtual docaider o lógica de Aider
-    # subprocess.run([f"{project_path}/docaider", ...])
+    cmd = f"aider --input {input} --output {output} --mode {mode}"
+    if template:
+        cmd += f" --template {template}"
+    if git_commit:
+        cmd += " --git-commit"
+    run_in_venv("docaider-env", cmd)
 
 # -----------------------
 # Subcomando: docrefactoring
 # -----------------------
 @cli.command()
-@click.option('--project-path', '-p', default='.', help='Generar documentación refactorizada a partir de documentación `legacy`.')
-@click.option('--input', '-i', default='.', help='Directorio raíz de entrada')
-@click.option('--output', '-o', default='./doc', help='Directorio donde generar la documentación')
-@click.option('--template', '-t', default=None, help='Plantilla markdown para documentación')
+@click.option('--input', '-i', default='.', help='Directorio raíz de documentación legacy')
+@click.option('--output', '-o', default='./doc', help='Directorio donde generar la documentación refactorizada')
+@click.option('--template', '-t', default=None, help='Plantilla markdown')
 @click.option('--git-commit', is_flag=True, help='Hacer commit automático de cada fichero generado')
-@click.option('--mode', default='incremental', help='Determina si la refactoriza la documentación completa (full) o de forma incremental (incremental)')
-def docrefactoring(project_path):
+@click.option('--mode', default='incremental', help='Modo de refactorización: incremental o full')
+def docrefactoring(input, output, template, git_commit, mode):
     """Genera documentación refactorizada automáticamente con Aider u otra IA."""
-    click.echo(f"[Documentation] Generando documentación refactorizada en: {project_path}")
+    cmd = f"aider-refactor --input {input} --output {output} --mode {mode}"
+    if template:
+        cmd += f" --template {template}"
+    if git_commit:
+        cmd += " --git-commit"
+    run_in_venv("docaider-env", cmd)
 
 # -----------------------
 # Subcomando: programming
 # -----------------------
 @cli.command()
-@click.option('--project-path', '-p', default='.', help='Ruta al proyecto para programar o analizar código.')
-@click.option('--input', '-i', default='.', help='Directorio raíz de entrada')
-@click.option('--output', '-o', default='./doc', help='Directorio donde generar el código')
+@click.option('--input', '-i', default='.', help='Directorio raíz del código')
+@click.option('--output', '-o', default='./doc', help='Directorio donde generar código o tests')
 @click.option('--git-commit', is_flag=True, help='Hacer commit automático de cada fichero generado')
-@click.option('--mode', default='incremental', help='Determina si la refactoriza todo el código (full) o de forma incremental (incremental)')
-def programming(project_path):
+@click.option('--mode', default='incremental', help='Modo de generación: incremental o full')
+def programming(input, output, git_commit, mode):
     """Asiste en programación, generación de tests o análisis de código."""
-    click.echo(f"[Programming] Analizando/Generando código en: {project_path}")
-    # Lógica para lanzar devaider
+    cmd = f"devaider --input {input} --output {output} --mode {mode}"
+    if git_commit:
+        cmd += " --git-commit"
+    run_in_venv("devaider-env", cmd)
 
 # -----------------------
 # Subcomando: devrefactoring
 # -----------------------
 @cli.command()
-@click.option('--project-path', '-p', default='.', help='Generar código refactorizado a partir de código `legacy`.')
-@click.option('--input', '-i', default='.', help='Directorio raíz de entrada')
-@click.option('--output', '-o', default='./doc', help='Directorio donde generar el código')
+@click.option('--input', '-i', default='.', help='Directorio raíz del código legacy')
+@click.option('--output', '-o', default='./doc', help='Directorio donde generar código refactorizado')
 @click.option('--git-commit', is_flag=True, help='Hacer commit automático de cada fichero generado')
-@click.option('--mode', default='incremental', help='Determina si la refactoriza el código completo (full) o de forma incremental (incremental)')
-def devrefactoring(project_path):
-    """Genera documentación refactorizada automáticamente con Aider u otra IA."""
-    click.echo(f"[Documentation] Generando código refactorizado en: {project_path}")
+@click.option('--mode', default='incremental', help='Modo de refactorización: incremental o full')
+def devrefactoring(input, output, git_commit, mode):
+    """Genera código refactorizado automáticamente."""
+    cmd = f"devaider-refactor --input {input} --output {output} --mode {mode}"
+    if git_commit:
+        cmd += " --git-commit"
+    run_in_venv("devaider-env", cmd)
 
 # -----------------------
 # Subcomando: images
 # -----------------------
 @cli.command()
-@click.option('--output', default='./images', help='Directorio donde guardar imágenes generadas.')
+@click.option('--output', '-o', default='./images', help='Directorio donde guardar imágenes generadas.')
 def images(output):
     """Genera imágenes con IA según parámetros y personajes."""
-    click.echo(f"[Images] Guardando imágenes en: {output}")
-    # Lógica para makeimages
+    cmd = f"makeimages --output {output}"
+    run_in_venv("makeimages-env", cmd)
 
 # -----------------------
 # Subcomando: videos
 # -----------------------
 @cli.command()
-@click.option('--output', default='./videos', help='Directorio donde guardar vídeos generados.')
+@click.option('--output', '-o', default='./videos', help='Directorio donde guardar vídeos generados.')
 def videos(output):
     """Genera vídeos con IA (avatares, lip-sync, etc.)."""
-    click.echo(f"[Videos] Guardando vídeos en: {output}")
-    # Lógica para makevideos
+    cmd = f"makevideos --output {output}"
+    run_in_venv("makevideos-env", cmd)
 
 # -----------------------
 # Subcomando: content
 # -----------------------
 @cli.command()
-@click.option('--profile', default=None, help='Perfil de influencer para generar contenido.')
+@click.option('--profile', '-p', default=None, help='Perfil de influencer para generar contenido.')
 def content(profile):
     """Genera contenido textual para influencers IA."""
-    click.echo(f"[Content] Generando contenido para el perfil: {profile}")
-    # Lógica para createcontents
+    cmd = f"createcontents --profile {profile or ''}"
+    run_in_venv("createcontents-env", cmd)
 
 # -----------------------
 # Subcomando: characters
 # -----------------------
 @cli.command()
-@click.option('--name', default=None, help='Nombre del personaje IA a crear.')
+@click.option('--name', '-n', default=None, help='Nombre del personaje IA a crear.')
 def characters(name):
     """Crea un personaje IA consistente con personalidad, intereses y voz."""
-    click.echo(f"[Characters] Creando personaje IA: {name}")
-    # Lógica para createcharacter
+    cmd = f"createcharacter --name {name or ''}"
+    run_in_venv("createcontents-env", cmd)
 
 # -----------------------
 # Subcomando: lora
 # -----------------------
 @cli.command()
-@click.option('--character', default=None, help='Personaje IA para entrenar LoRA.')
+@click.option('--character', '-c', default=None, help='Personaje IA para entrenar LoRA.')
 def lora(character):
     """Genera LoRA para un personaje IA específico."""
-    click.echo(f"[LoRA] Generando LoRA para: {character}")
-    # Lógica para createlora
+    cmd = f"createlora --character {character or ''}"
+    run_in_venv("createcontents-env", cmd)
 
+# -----------------------
 if __name__ == "__main__":
     cli()
