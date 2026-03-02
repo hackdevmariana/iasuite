@@ -59,3 +59,17 @@ chmod +x ~/.local/bin/iasuite
 ```bash
 iasuite --help
 ```
+
+Subcomandos disponibles:
+
+- documentation → Genera documentación automáticamente.
+- docrefactoring → Refactoriza documentación existente.
+- programming → Asiste en programación, tests, análisis de código.
+- devrefactoring → Refactoriza código legacy.
+- images → Genera imágenes con IA.
+- videos → Genera vídeos con IA.
+- content → Genera contenido para perfiles.
+- characters → Crea personajes IA consistentes.
+- lora → Genera LoRA para personajes IA.
+
+Cada subcomando tiene su propio entorno virtual y se ejecuta automáticamente dentro de él.
