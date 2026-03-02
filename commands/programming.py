@@ -1,6 +1,10 @@
 # commands/programming.py
 import click
-from iasuite.utils.system import run_in_venv
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from utils.system import run_in_venv
 
 # -----------------------
 # Subcomando: programming
