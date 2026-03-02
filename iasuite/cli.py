@@ -10,7 +10,9 @@ from commands.upgrade import upgrade
 from commands.documentation import documentation, docrefactoring
 from commands.programming import programming, devrefactoring
 from commands.media import images, videos
-from commands.content import content, characters, lora
+from commands.content import content
+from commands.characters import characters
+from commands.lora import lora
 
 @click.group()
 def cli():
