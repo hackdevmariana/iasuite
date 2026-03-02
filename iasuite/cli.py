@@ -36,6 +36,14 @@ def cli():
 def setup():
     """Crea todos los entornos virtuales necesarios e instala dependencias."""
     import sys
+    
+    MIN_VERSION = (3, 10)
+
+    if sys.version_info < MIN_VERSION:
+        click.echo("❌ Python 3.10+ is required.")
+        sys.exit(1)
+
+    click.echo(f"✔ Python version: {sys.version.split()[0]}")
 
     base_path = os.path.dirname(os.path.dirname(__file__))
     envs_path = os.path.join(base_path, "envs")
