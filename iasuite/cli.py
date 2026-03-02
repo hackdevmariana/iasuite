@@ -32,6 +32,16 @@ def detect_gpu():
     except FileNotFoundError:
         return False
 
+def detect_ollama():
+    try:
+        result = subprocess.run(
+            ["ollama", "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        return result.returncode == 0
+    except FileNotFoundError:
+        return False
 
 # -----------------------
 # CLI principal
@@ -61,6 +71,12 @@ def setup():
         click.echo("🚀 NVIDIA GPU detected.")
     else:
         click.echo("⚠ No NVIDIA GPU detected. Image/video generation may be slow.")
+
+    if detect_ollama():
+        click.echo("✔ Ollama detected.")
+    else:
+        click.echo("⚠ Ollama not found in PATH.")
+        click.echo("  Install from: https://ollama.com")
 
     base_path = os.path.dirname(os.path.dirname(__file__))
     envs_path = os.path.join(base_path, "envs")
