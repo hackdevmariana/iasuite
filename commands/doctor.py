@@ -1,6 +1,10 @@
 import click
 import sys
-from iasuite.utils.system import detect_gpu, detect_ollama
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from utils.system import detect_gpu, detect_ollama
 
 @click.command()
 def doctor():
