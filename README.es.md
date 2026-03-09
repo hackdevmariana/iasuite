@@ -9,11 +9,11 @@
 1. Clonar el repositorio:
 
 ```bash
-git clone https://github.com/myuser/iasuite.git
+git clone https://github.com/hackdevmariana/iasuite.git
 cd iasuite
 ```
 
-2. Crear los entornos virtuales para cada subcomando:
+2. a) Crear los entornos virtuales para cada subcomando:
 
 ```bash
 # Documentación
@@ -44,7 +44,13 @@ pip install click ollama
 
 > Puedes ajustar los paquetes según las necesidades de cada subcomando.
 
-3. Crear un alias o script en tu PATH para lanzar iasuite fácilmente:
+2. b) Puedes usar el comando `iasuite setup` para crear automáticamente todos los entornos y paquetes necesarios.
+
+```sh 
+iasuite setup
+```
+
+3. a) Crear un alias o script en tu PATH para lanzar iasuite fácilmente:
 
 Por, ejemplo, en ~/.local/bin/iasuite:
 
@@ -52,6 +58,12 @@ Por, ejemplo, en ~/.local/bin/iasuite:
 #!/usr/bin/env bash
 python3 /ruta/a/iasuite/iasuite/cli.py "$@"
 chmod +x ~/.local/bin/iasuite
+```
+
+3. b) Agregar un alias en tu `.bashrc` o `.zshrc`:
+
+```bash
+alias iasuite="python3 /ruta/a/iasuite/iasuite/cli.py"
 ```
 
 ## Uso
@@ -62,17 +74,26 @@ iasuite --help
 
 Subcomandos disponibles:
 
-- documentation → Genera documentación automáticamente.
-- docrefactoring → Refactoriza documentación existente.
-- programming → Asiste en programación, tests, análisis de código.
-- devrefactoring → Refactoriza código legacy.
-- images → Genera imágenes con IA.
-- videos → Genera vídeos con IA.
-- content → Genera contenido para perfiles.
-- characters → Crea personajes IA consistentes.
-- lora → Genera LoRA para personajes IA.
+- `setup` → Crea automáticamente todos los entornos virtuales necesarios.
+- `documentation` → Genera documentación automáticamente.
+- `docrefactoring` → Refactoriza documentación existente.
+- `programming` → Asiste en programación, tests, análisis de código.
+- `devrefactoring` → Refactoriza código legacy.
+- `images` → Genera imágenes con IA.
+- `videos` → Genera vídeos con IA.
+- `content` → Genera contenido para perfiles.
+- `characters` → Crea personajes IA consistentes.
+- `lora` → Genera LoRA para personajes IA.
 
 Cada subcomando tiene su propio entorno virtual y se ejecuta automáticamente dentro de él.
+
+## Ejemplos prácticos
+
+```bash
+iasuite documentation -i ./mi_proyecto -o ./docs
+iasuite programming -i ./mi_proyecto -o ./tests --mode full
+iasuite images -o ./assets/images
+```
 
 ## Contribuir
 
