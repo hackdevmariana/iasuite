@@ -95,6 +95,15 @@ iasuite programming -i ./mi_proyecto -o ./tests --mode full
 iasuite images -o ./assets/images
 ```
 
+## Visión
+
+`iasuite` ayuda a automatizar tareas repetitivas en desarrollo:
+
+- Documentación automática
+- Refactorización de código y docs
+- Generación de tests consistentes
+- Transformar proyectos desordenados en sistemas estructurados
+
 ## Contribuir
 
 Clona el repositorio.
