@@ -23,7 +23,9 @@ git clone https://github.com/hackdevmariana/iasuite.git
 cd iasuite
 ```
 
-2. a) Create virtual environments for each subcommand:
+2. Create virtual environments for each subcommand:
+
+**Option A: Manually**
 
 ```bash
 # Documentación
@@ -54,15 +56,15 @@ pip install click ollama
 
 > Adjust installed packages depending on your AI stack and tools.
 
-2. b) Create virtual environments for each subcommand:
+**Option B: Automated**
 
-Alternatively, use iasuite setup to create all environments and install required packages automatically.
+```bash
+iasuite setup
+```
 
-3. a) Add iasuite to your PATH
+3. Add `iasuite` to your PATH
 
-For example, create: 
-
-`~/.local/bin/iasuite`:
+**Option 1: Script in `~/.local/bin/iasuite`:**
 
 ```bash
 #!/usr/bin/env bash
@@ -77,7 +79,7 @@ chmod +x ~/.local/bin/iasuite
 
 Make sure `~/.local/bin` is in your PATH.
 
-3. b) Optional: add an alias to your shell:
+**Option 2: Alias in your shell (`.bashrc` or `.zshrc`)**
 
 ```bash
 alias iasuite="python3 /path/to/iasuite/iasuite/cli.py"
