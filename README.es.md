@@ -13,7 +13,9 @@ git clone https://github.com/hackdevmariana/iasuite.git
 cd iasuite
 ```
 
-2. a) Crear los entornos virtuales para cada subcomando:
+2. Crear los entornos virtuales para cada subcomando:
+
+**Opción A: Manualmente**
 
 ```bash
 # Documentación
@@ -44,15 +46,17 @@ pip install click ollama
 
 > Puedes ajustar los paquetes según las necesidades de cada subcomando.
 
-2. b) Puedes usar el comando `iasuite setup` para crear automáticamente todos los entornos y paquetes necesarios.
+**Opción B: Automatizada**
+
+Puedes usar el comando `iasuite setup` para crear automáticamente todos los entornos y paquetes necesarios.
 
 ```sh 
 iasuite setup
 ```
 
-3. a) Crear un alias o script en tu PATH para lanzar iasuite fácilmente:
+3. Añadir `iasuite` a tu PATH:
 
-Por, ejemplo, en ~/.local/bin/iasuite:
+**Opción A: Script en `~/.local/bin/iasuite`**
 
 ```bash
 #!/usr/bin/env bash
@@ -60,7 +64,9 @@ python3 /ruta/a/iasuite/iasuite/cli.py "$@"
 chmod +x ~/.local/bin/iasuite
 ```
 
-3. b) Agregar un alias en tu `.bashrc` o `.zshrc`:
+3. 
+
+**Opción B: Agregar un alias en tu `.bashrc` o `.zshrc`:** 
 
 ```bash
 alias iasuite="python3 /ruta/a/iasuite/iasuite/cli.py"
