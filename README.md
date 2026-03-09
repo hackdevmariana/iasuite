@@ -115,7 +115,7 @@ Each command automatically runs inside its dedicated virtual environment.
 
 ## Practical examples
 
-```sh
+```bash
 iasuite documentation -i ./my_project -o ./docs
 iasuite programming -i ./my_project -o ./tests --mode full
 iasuite images -o ./assets/images
